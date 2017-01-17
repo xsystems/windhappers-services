@@ -1,0 +1,17 @@
+version: '2'
+services:
+  windhappers-client-web:
+    image: xsystems/windhappers-client-web
+    container_name: windhappers-client-web
+  windhappers-proxy:
+    build: build-context/windhappers-proxy
+    image: xsystems/windhappers-proxy
+    container_name: windhappers-proxy
+    restart: unless-stopped
+    environment:
+        - "DOMAIN=new.windhappers.nl"
+    links:
+        - "windhappers-client-web"
+    ports:
+        - "80:80"
+        - "443:443"

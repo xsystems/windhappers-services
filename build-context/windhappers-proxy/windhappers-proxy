@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+letsencrypt certonly --domains ${DOMAIN}
+
+a2ensite httpd-windhappers-proxy.conf
+apache2ctl restart
+
+cron
+
+touch /var/log/certbot.log /usr/local/apache2/logs/error.log /usr/local/apache2/logs/access.log
+exec tail -f /var/log/certbot.log /usr/local/apache2/logs/error.log /usr/local/apache2/logs/access.log
